@@ -10,6 +10,9 @@ authRouter.post('/sign-in', signInAction);
 authRouter.get('/refresh-token', refreshTokenAction);
 
 
+authRouter.get('/test', authenticate, (req, res, next) => {
+    res.json(req.connectedUser);
+});
 
 
 export default authRouter;

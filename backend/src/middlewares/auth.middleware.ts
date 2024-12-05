@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../utils/jwt.util";
+import { TokenPayloadDTO } from "../dtos/auth.dto";
 
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
@@ -17,8 +18,13 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         const token = authHeader.split(' ')[1]; // Extract the token
 
         // Verify the token
-        const decoded = verifyToken(token);
-        
+        const decoded = verifyToken(token) as TokenPayloadDTO;
+        req.connectedUser = {
+            email: decoded.email,
+            fullname: decoded.fullname,
+            id: decoded.id
+        };
+
         // Proceed to the next middleware or route handler
         next();
 
