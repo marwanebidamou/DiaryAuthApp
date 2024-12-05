@@ -18,7 +18,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 
         // Verify the token
         const decoded = verifyToken(token);
-
+        
         // Proceed to the next middleware or route handler
         next();
 

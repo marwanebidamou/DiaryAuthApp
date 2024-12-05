@@ -45,6 +45,7 @@ export type SignUpResponseDTO = {
     user?: ConnectedUserResponseDTO
 }
 
+
 export enum SignUpResponseStatus {
     EmailAlreadyInUse = 'EmailAlreadyInUse',
 }
@@ -56,4 +57,24 @@ export type SignInResponseDTO = {
         refresh: string,
     },
     user?: ConnectedUserResponseDTO
+}
+
+
+export type RefreshTokenDTO = {
+    refreshToken: string,
+}
+
+
+export type RefreshTokenResponseDTO = {
+    success: boolean,
+    token?: {
+        access: string,
+        refresh: string,
+    },
+}
+
+export type TokenPayloadDTO = {
+    email: string;
+    fullname: string;
+    id: string;
 }

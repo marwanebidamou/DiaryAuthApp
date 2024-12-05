@@ -1,8 +1,8 @@
 import { Schema } from "zod";
-import { SignInDTO, SignInResponseDTO, SignUpDTO, SignUpResponseDTO, SignUpResponseStatus } from "../dtos/auth.dto";
+import { RefreshTokenDTO, RefreshTokenResponseDTO, SignInDTO, SignInResponseDTO, SignUpDTO, SignUpResponseDTO, SignUpResponseStatus, TokenPayloadDTO } from "../dtos/auth.dto";
 import { UserModel } from "../models/user.model";
 import { comparePassword, hashPassword } from "../utils/hashing.util";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt.util";
+import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/jwt.util";
 
 
 
@@ -21,7 +21,7 @@ export async function signUp(info: SignUpDTO): Promise<SignUpResponseDTO> {
     });
 
     //Generate token
-    const payload = {
+    const payload: TokenPayloadDTO = {
         email: newUser.email!,
         fullname: newUser.fullname!,
         id: newUser._id.toString(),
@@ -63,7 +63,7 @@ export async function signIn(info: SignInDTO): Promise<SignInResponseDTO> {
         return { success: false }
     }
 
-    const payload = {
+    const payload: TokenPayloadDTO = {
         email: user.email!,
         fullname: user.fullname!,
         id: user._id.toString(),
@@ -84,4 +84,23 @@ export async function signIn(info: SignInDTO): Promise<SignInResponseDTO> {
         token
     }
 
+}
+
+
+
+export async function refreshToken(tokenRequest: RefreshTokenDTO): Promise<RefreshTokenResponseDTO> {
+    try {
+        const payloadObj = verifyToken(tokenRequest.refreshToken!) as TokenPayloadDTO;
+
+        const token = {
+            access: generateAccessToken({ email: payloadObj.email!, fullname: payloadObj.fullname, id: payloadObj.id }),
+            refresh: generateRefreshToken({ email: payloadObj.email!, fullname: payloadObj.fullname, id: payloadObj.id })
+        };
+        return {
+            success: true,
+            token
+        }
+    } catch (error) {
+        return { success: false }
+    }
 }
