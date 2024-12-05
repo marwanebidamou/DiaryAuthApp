@@ -2,6 +2,7 @@ import { Schema } from "zod";
 import { SignUpDTO, SignUpResponseDTO, SignUpResponseStatus } from "../dtos/auth.dto";
 import { UserModel } from "../models/user.model";
 import { hashPassword } from "../utils/hashing.util";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt.util";
 
 
 
@@ -19,6 +20,17 @@ export async function signUp(info: SignUpDTO): Promise<SignUpResponseDTO> {
         //TODO: picture_url:'.....'
     });
 
+    //Generate token
+    const payload = {
+        email: newUser.email!,
+        fullname: newUser.fullname!,
+        id: newUser._id.toString(),
+    };
+    const token = {
+        access: generateAccessToken(payload),
+        refresh: generateRefreshToken(payload)
+    };
+
     return {
         success: true,
         user: {
@@ -27,7 +39,7 @@ export async function signUp(info: SignUpDTO): Promise<SignUpResponseDTO> {
             id: newUser._id.toString(),
             pictureUrl: 'https://placehold.co/400' //TODO: handle profile picture
         },
-        //token:{}//TODO: handle token
+        token
     }
 }
 
