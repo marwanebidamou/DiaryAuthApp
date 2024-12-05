@@ -1,7 +1,7 @@
 import { Schema } from "zod";
-import { SignUpDTO, SignUpResponseDTO, SignUpResponseStatus } from "../dtos/auth.dto";
+import { SignInDTO, SignInResponseDTO, SignUpDTO, SignUpResponseDTO, SignUpResponseStatus } from "../dtos/auth.dto";
 import { UserModel } from "../models/user.model";
-import { hashPassword } from "../utils/hashing.util";
+import { comparePassword, hashPassword } from "../utils/hashing.util";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.util";
 
 
@@ -43,7 +43,45 @@ export async function signUp(info: SignUpDTO): Promise<SignUpResponseDTO> {
     }
 }
 
+
 export const isEmailExists = async (email: String): Promise<{ exists: boolean }> => {
     let isExist = await UserModel.exists({ email: email })
     return { exists: !!isExist };
+}
+
+
+export async function signIn(info: SignInDTO): Promise<SignInResponseDTO> {
+    //Get user from database
+    const user = await UserModel.findOne({ email: info.email });
+    if (!user) {
+        return { success: false }
+    }
+
+    //Compare password
+    const isMatch = await comparePassword(info.password, user.password!);
+    if (!isMatch) {
+        return { success: false }
+    }
+
+    const payload = {
+        email: user.email!,
+        fullname: user.fullname!,
+        id: user._id.toString(),
+    };
+    const token = {
+        access: generateAccessToken(payload),
+        refresh: generateRefreshToken(payload)
+    };
+
+    return {
+        success: true,
+        user: {
+            email: user.email!,
+            fullname: user.fullname!,
+            id: user._id.toString(),
+            pictureUrl: 'https://placehold.co/400' //TODO: handle profile picture
+        },
+        token
+    }
+
 }

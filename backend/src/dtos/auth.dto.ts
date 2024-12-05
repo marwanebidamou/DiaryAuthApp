@@ -14,8 +14,19 @@ export const signupSchema = z.object({
 });
 
 
+export const signInSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email address"),
+    password: z
+        .string()
+        .min(10, "Password must be at least 10 characters long"),
+});
+
 // Automatically infer TypeScript types from the schemas
 export type SignUpDTO = z.infer<typeof signupSchema>;
+export type SignInDTO = z.infer<typeof signInSchema>;
 
 type ConnectedUserResponseDTO = {
     id?: string,
@@ -36,4 +47,13 @@ export type SignUpResponseDTO = {
 
 export enum SignUpResponseStatus {
     EmailAlreadyInUse = 'EmailAlreadyInUse',
+}
+
+export type SignInResponseDTO = {
+    success: boolean,
+    token?: {
+        access: string,
+        refresh: string,
+    },
+    user?: ConnectedUserResponseDTO
 }
