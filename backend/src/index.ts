@@ -3,6 +3,7 @@ import connectDB from './config/db.config';
 import { PORT } from './config/env.config';
 import { CreateDiary } from './services/diary.service';
 import morgan from 'morgan';
+import authRouter from './routes/auth.routes';
 
 const app: Application = express();
 
@@ -13,14 +14,12 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(express.json()); // For parsing JSON requests
 
 
+app.use('/api/auth', authRouter);
+
 app.get('/', (req, res) => {
     res.send("GET Request Called")
 })
 
-app.get('/testdb', (req, res) => {
-    let result = CreateDiary();
-    res.send(result);
-})
 
 connectDB().then(() => {
     app.listen(PORT, () => {
