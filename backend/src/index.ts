@@ -2,8 +2,13 @@ import express, { Application } from 'express';
 import connectDB from './config/db.config';
 import { PORT } from './config/env.config';
 import { CreateDiary } from './services/diary.service';
+import morgan from 'morgan';
 
 const app: Application = express();
+
+//Logging using morgan
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
 
 app.use(express.json()); // For parsing JSON requests
 
