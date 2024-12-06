@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateDiary, getDiaries, UpdateDiary } from "../services/diary.service";
+import { CreateDiary, DeleteDiary, getDiaries, UpdateDiary } from "../services/diary.service";
 import { DiaryParamsDTO, DiaryResponseDTO, EditDiaryDTO, editDiarySchema, PaginatedDiariesResponseDTO, SearchDiariesDTO } from "../dtos/diary.dto";
 
 export const getDiariesAction = async (
@@ -69,4 +69,29 @@ export const updateDiaryAction = async (
         next(error);
     }
 };
+
+
+
+export const deleteDiaryAction = async (
+    req: Request<DiaryParamsDTO, { success: boolean }, {}, {}>,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const userId = req.connectedUser?.id;
+        if (!userId) {
+            res.status(403).json({ success: false });
+            return;
+        }
+        const result = await DeleteDiary(userId, req.params.diaryId);
+        if (!result) {
+            res.status(404).json({ success: false });
+        } else {
+            res.status(200).json({ success: true });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
 

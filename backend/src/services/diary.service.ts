@@ -77,3 +77,13 @@ export async function UpdateDiary(userId: string, diaryId: string, diaryData: Ed
         updatedAt: updatedDiary.updatedAt.toISOString(),
     };
 }
+
+export async function DeleteDiary(userId: string, diaryId: string): Promise<boolean> {
+
+    const result = await DiaryModel.deleteOne({
+        _id: diaryId,
+        user_id: userId,
+    });
+
+    return result.deletedCount > 0;
+}
