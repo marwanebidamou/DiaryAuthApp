@@ -5,6 +5,7 @@ import { CreateDiary } from './services/diary.service';
 import morgan from 'morgan';
 import authRouter from './routes/auth.routes';
 import diaryRouter from './routes/diary.routes';
+import errorHandler from './middlewares/error.middleware';
 
 const app: Application = express();
 
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
     res.send("GET Request Called")
 })
 
+// Error middleware 
+app.use(errorHandler);
 
 connectDB().then(() => {
     app.listen(PORT, () => {
