@@ -1,0 +1,39 @@
+<div class="header">
+    <h1>{{ id ? "Edit diary" : "Add new diary" }}</h1>
+    <div class="button-group">
+        <button mat-fab extended type="button" (click)="submitForm()" [disabled]="!form.valid"
+            class="action-button">Save</button>
+
+        <a [routerLink]="['','diary']">
+            <button mat-fab extended type="button" class="action-button">Cancel</button>
+        </a>
+
+
+    </div>
+</div>
+
+<div class="content">
+    <form class="form" [formGroup]="form" (ngSubmit)="submitForm()">
+        <mat-form-field class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput [formControl]="title" />
+            @if(title.invalid && (title.dirty || title.touched) && title.hasError('required')){<mat-error>Title is
+                required</mat-error>}
+            @if(title.invalid && (title.dirty || title.touched) && title.hasError('minlength')){<mat-error>Title is not
+                valid</mat-error>}
+
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput [formControl]="description"></textarea>
+            @if(description.invalid && (description.dirty || description.touched) &&
+            description.hasError('required')){<mat-error>Description is required</mat-error>}
+            @if(description.invalid && (description.dirty || description.touched) &&
+            description.hasError('minlength')){<mat-error>Description is not valid</mat-error>}
+
+        </mat-form-field>
+
+
+    </form>
+</div>

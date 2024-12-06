@@ -11,6 +11,16 @@ export const routes: Routes = [
         loadComponent: () => import('./components/diaries/diaries.component').then(m => m.DiariesComponent),
         canActivate: [authGuard]
     },
+    {
+        path: 'diary/create',
+        loadComponent: () => import('./components/edit-diary/edit-diary.component').then(m => m.EditDiaryComponent),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'diary/:id',
+        loadComponent: () => import('./components/edit-diary/edit-diary.component').then(m => m.EditDiaryComponent),
+        canActivate: [authGuard]
+    },
     { path: '**', redirectTo: 'home' },
 
 ];

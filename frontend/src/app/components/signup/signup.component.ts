@@ -4,13 +4,12 @@ import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { LoginRequestDTO, SignUpRequestDTO } from '../../models/auth.dtos';
+import { SignUpRequestDTO } from '../../models/auth.dtos';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-signup',
-  imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatButton, MatLabel, MatError, MatInputModule, ReactiveFormsModule, JsonPipe],
+  imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatButton, MatLabel, MatError, MatInputModule, ReactiveFormsModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })

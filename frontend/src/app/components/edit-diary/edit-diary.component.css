@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    flex: 1;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .action-button {
+    float: right;
+  }
+  
+  .content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form {
+    flex: 1;
+    max-width: 500px;
+    display: block;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  

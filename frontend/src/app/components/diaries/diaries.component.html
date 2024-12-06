@@ -1,1 +1,26 @@
-<p>diaries works!</p>
+<div class="diary-list">
+  <h2>My Diaries</h2>
+</div>
+@if(isLoading()){
+<mat-spinner></mat-spinner>
+}
+@else {
+@for (item of list()?.diaries; track $index) {
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{item.title}}</mat-card-title>
+    <mat-card-subtitle>Last updated on {{item.updatedAt}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{item.description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button>Learn More</button>
+  </mat-card-actions>
+</mat-card>
+<br>
+}
+
+}
