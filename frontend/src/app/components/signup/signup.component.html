@@ -1,1 +1,62 @@
-<p>signup works!</p>
+<mat-card class="sugnup-card">
+    <mat-card-title style="margin: 20px;">Sign up</mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput [formControl]="email" />
+                @if(email.invalid && (email.dirty || email.touched) && email.hasError('invalidEmail'))
+                {<mat-error>Please enter a valid email address</mat-error>}
+                @if(email.invalid && (email.dirty || email.touched) && email.hasError('required'))
+                {<mat-error>Email is required</mat-error>}
+            </mat-form-field>
+
+            <span class="spacer"></span>
+
+            <mat-form-field class="full-width">
+                <mat-label>Fullname</mat-label>
+                <input matInput [formControl]="fullname" />
+                @if(fullname.invalid && (fullname.dirty || fullname.touched) &&
+                fullname.hasError('required')){<mat-error>Fullname is
+                    required</mat-error>}
+            </mat-form-field>
+
+            <br>
+            <br>
+
+            <mat-form-field class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [formControl]="password" />
+                @if(password.invalid && (password.dirty || password.touched) && password.hasError('required'))
+                {<mat-error>Please enter the password</mat-error>}
+                @else if(password.invalid && (password.dirty || password.touched) && password.hasError('minlength'))
+                {<mat-error>Password must be at least 10 characters long</mat-error>}
+
+            </mat-form-field>
+
+            <span class="spacer"></span>
+
+            <mat-form-field class="full-width">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput type="password" [formControl]="confirmPassword" />
+                @if(confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched) &&
+                confirmPassword.hasError('required'))
+                {<mat-error>Please re-enter the password</mat-error>}
+                @if(confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched) &&
+                confirmPassword.hasError('notidentical'))
+                {<mat-error>Confirm password not the same as the password</mat-error>}
+            </mat-form-field>
+
+            @if(error()){
+            <p class="error">
+                {{ error() }}
+            </p>
+            }
+            <div class="button">
+                <button type="submit" class="submit" [disabled]="!form.valid" mat-button>Create account</button>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

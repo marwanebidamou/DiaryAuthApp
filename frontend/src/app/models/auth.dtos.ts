@@ -10,10 +10,10 @@ export interface LoginResponseDTO {
         access: string;
         refresh: string;
     };
-    user: ConnectedUser;
+    user: ConnectedUserDTO;
 }
 
-export interface ConnectedUser {
+export interface ConnectedUserDTO {
     id: string;
     fullname: string;
     email: string;
@@ -30,4 +30,27 @@ export interface RefreshTokenResponseDTO {
         access: string;
         refresh: string;
     };
+}
+
+export interface SignUpRequestDTO {
+    fullname: string;
+    email: string;
+    password: string;
+    pictureBae64?: string;
+}
+
+
+export type SignUpResponseDTO = {
+    success: boolean,
+    status?: SignUpResponseStatus,
+    token?: {
+        access: string,
+        refresh: string,
+    },
+    user?: ConnectedUserDTO
+}
+
+
+export enum SignUpResponseStatus {
+    EmailAlreadyInUse = 'EmailAlreadyInUse',
 }

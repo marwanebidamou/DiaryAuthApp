@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ConnectedUser, LoginRequestDTO, LoginResponseDTO } from '../models/auth.dtos';
+import { ConnectedUserDTO, LoginRequestDTO, LoginResponseDTO, SignUpRequestDTO, SignUpResponseDTO } from '../models/auth.dtos';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class AuthService {
   private userKey = 'userInfo';
 
 
-  currentUser = signal<ConnectedUser | null>(null);
+  currentUser = signal<ConnectedUserDTO | null>(null);
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -28,7 +28,7 @@ export class AuthService {
 
   login(dto: LoginRequestDTO): Observable<LoginResponseDTO> {
     return new Observable((observer) => {
-      this.http.post<LoginResponseDTO>(`${environment.apiUrl}/auth/login`, dto).subscribe({
+      this.http.post<LoginResponseDTO>(`${environment.apiUrl}/auth/sign-in`, dto).subscribe({
         next: (response) => {
           // Save user and tokens
           this.saveTokens(response.token.access, response.token.refresh);
@@ -40,6 +40,26 @@ export class AuthService {
       });
     });
   }
+
+  signup(dto: SignUpRequestDTO): Observable<SignUpResponseDTO> {
+    return new Observable((observer) => {
+      this.http.post<LoginResponseDTO>(`${environment.apiUrl}/auth/sign-up`, dto).subscribe({
+        next: (response) => {
+          // Save user and tokens
+          if (response.success) {
+            this.saveTokens(response.token.access, response.token.refresh);
+            this.setCurrentUser(response.user);
+            observer.next(response);
+            observer.complete();
+          } else {
+            observer.error(response);
+          }
+        },
+        error: (err) => observer.error(err),
+      });
+    });
+  }
+
 
 
   logout(): void {
@@ -71,7 +91,7 @@ export class AuthService {
   }
 
   //#region helpers
-  private setCurrentUser(user: ConnectedUser): void {
+  private setCurrentUser(user: ConnectedUserDTO): void {
     this.currentUser.set(user);
     localStorage.setItem(this.userKey, JSON.stringify(user));
   }
