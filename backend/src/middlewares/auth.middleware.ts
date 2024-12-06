@@ -4,7 +4,7 @@ import { verifyToken } from "../utils/jwt.util";
 import { TokenPayloadDTO } from "../dtos/auth.dto";
 
 
-export const authenticate = (req: Request<any, any, any, any>, res: Response, next: NextFunction) => {
+export const authenticate = (req: Request<{}, {}, {}, {}>, res: Response, next: NextFunction) => {
 
     try {
         // Get the token from the Authorization header

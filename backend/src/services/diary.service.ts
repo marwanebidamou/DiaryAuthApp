@@ -1,12 +1,22 @@
-import mongoose from "mongoose";
 import { DiaryModel } from "../models/diary.model";
-import { PaginatedDiariesResponseDTO, SearchDiariesDTO } from "../dtos/diary.dto";
+import { DiaryResponseDTO, EditDiaryDTO, PaginatedDiariesResponseDTO, SearchDiariesDTO } from "../dtos/diary.dto";
 
 
-export async function CreateDiary() {
-    let id = new mongoose.Types.ObjectId();
+export async function CreateDiary(userId: string, diaryData: EditDiaryDTO): Promise<DiaryResponseDTO> {
 
-    return await DiaryModel.create({ title: "test", description: 'test', user_id: id });
+    const newDiary = await DiaryModel.create({
+        user_id: userId,
+        title: diaryData.title,
+        description: diaryData.description,
+    });
+
+    return {
+        id: newDiary.id,
+        title: newDiary.title!,
+        description: newDiary.description!,
+        createdAt: newDiary.createdAt.toISOString(),
+        updatedAt: newDiary.updatedAt.toISOString(),
+    };
 }
 
 export async function getDiaries(
