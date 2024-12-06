@@ -1,16 +1,22 @@
 <mat-toolbar color="primary">
     <span>Smart Diary</span>
-    <span class="spacer"></span>
-    <nav>
+    <nav class="main-nav">
         <button mat-button routerLink="/home">Homepage</button>
         <button mat-button routerLink="/diary">Diaries</button>
+    </nav>
+
+
+    <span class="spacer"></span>
+    <nav>
+
 
         @if(!user()){
         <button mat-button [routerLink]="['login']">Login</button>
         <button mat-button [routerLink]="['signup']">Sign-up</button>
         }
         @else {
-        <span>Hello, {{user()?.fullname}}</span>
+        <span class="hello-text">Hello, {{user()?.fullname}}</span>
+
         <button mat-button (click)="logout()">Logout</button>
         }
 

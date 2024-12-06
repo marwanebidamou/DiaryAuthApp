@@ -6,3 +6,12 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .hello-text {
+    margin-right: 40px;
+    margin-top: 6px;
+  }
+
+  .main-nav{
+    margin-left:20px;
+  }
