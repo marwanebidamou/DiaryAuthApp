@@ -4,6 +4,7 @@ import { PORT } from './config/env.config';
 import { CreateDiary } from './services/diary.service';
 import morgan from 'morgan';
 import authRouter from './routes/auth.routes';
+import diaryRouter from './routes/diary.routes';
 
 const app: Application = express();
 
@@ -15,6 +16,8 @@ app.use(express.json()); // For parsing JSON requests
 
 
 app.use('/api/auth', authRouter);
+app.use('/api/diary', diaryRouter);
+
 
 app.get('/', (req, res) => {
     res.send("GET Request Called")
