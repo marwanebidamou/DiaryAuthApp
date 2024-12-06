@@ -21,7 +21,7 @@ export const signInSchema = z.object({
         .email("Invalid email address"),
     password: z
         .string()
-        .min(10, "Password must be at least 10 characters long"),
+        .min(1, "Password is required"),
 });
 
 // Automatically infer TypeScript types from the schemas

@@ -20,9 +20,12 @@ app.use('/api/auth', authRouter);
 app.use('/api/diary', diaryRouter);
 
 
-app.get('/', (req, res) => {
-    res.send("GET Request Called")
-})
+// 404 Not Found Middleware
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Resource not found' });
+});
+
+
 
 // Error middleware 
 app.use(errorHandler);
