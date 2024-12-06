@@ -57,3 +57,23 @@ export async function getDiaries(
         })),
     };
 }
+
+
+export async function UpdateDiary(userId: string, diaryId: string, diaryData: EditDiaryDTO): Promise<DiaryResponseDTO | null> {
+
+    const updatedDiary = await DiaryModel.findOneAndUpdate(
+        { _id: diaryId, user_id: userId }, // Ensure the user owns the diary
+        { $set: diaryData },
+        { new: true } // Return the updated document
+    );
+
+    if (!updatedDiary) return null;
+
+    return {
+        id: updatedDiary.id,
+        title: updatedDiary.title!,
+        description: updatedDiary.description!,
+        createdAt: updatedDiary.createdAt.toISOString(),
+        updatedAt: updatedDiary.updatedAt.toISOString(),
+    };
+}
